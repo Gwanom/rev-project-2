@@ -4,6 +4,9 @@ import java.util.Set;
 
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.annotation.*;
+
 @Entity
 @Table(name="users")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
@@ -13,7 +16,10 @@ public class UserModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="sg_user_id")
     private int userID; 
+	
     private String username;
+    
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@Column(name="u_password")
     private String password;
 	@Column(name="user_first_name")
@@ -22,12 +28,14 @@ public class UserModel {
     private String lastName;
 	@Column(name="user_email")
     private String email;
+	
+	@JsonProperty(access = Access.WRITE_ONLY)
     private boolean isbanned;
     
     @ManyToOne
     @JoinColumn(name="user_role")
     private RolesModel roles;
-
+    
 	public UserModel() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -46,6 +54,7 @@ public class UserModel {
 		this.roles = roles;
 	}
 
+	
 	public int getUserID() {
 		return userID;
 	}
@@ -61,7 +70,7 @@ public class UserModel {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
+	
 	public String getPassword() {
 		return password;
 	}
@@ -102,8 +111,8 @@ public class UserModel {
 		this.isbanned = isbanned;
 	}
 
-	public RolesModel getRoles() {
-		return roles;
+	public String getRoles() {
+		return roles.getRole_name();
 	}
 
 	public void setRoles(RolesModel roles) {
