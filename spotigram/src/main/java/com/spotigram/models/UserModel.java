@@ -1,51 +1,128 @@
 package com.spotigram.models;
 
+import java.util.Set;
+
+import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@Entity
+@Table(name="users")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class UserModel {
-    private int sg_user_id; 
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="sg_user_id")
+    private int userID; 
     private String username;
-    private String u_password;
-    private String user_first_name;
-    private String user_last_name;
-    private String user_email;
-    private int user_role;
-    private boolean isBanned;
+	@Column(name="u_password")
+    private String password;
+	@Column(name="user_first_name")
+    private String firstName;
+	@Column(name="user_last_name")
+    private String lastName;
+	@Column(name="user_email")
+    private String email;
+    private boolean isbanned;
     
-    
+    @ManyToOne
+    @JoinColumn(name="user_role")
+    private RolesModel roles;
+
 	public UserModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-
-	public UserModel(int sg_user_id, String username, String u_password, String user_first_name, String user_last_name,
-			String user_email, int user_role, boolean isBanned) {
+	public UserModel(int userID, String username, String password, String firstName, String lastName, String email,
+			boolean isbanned, RolesModel roles) {
 		super();
-		this.sg_user_id = sg_user_id;
+		this.userID = userID;
 		this.username = username;
-		this.u_password = u_password;
-		this.user_first_name = user_first_name;
-		this.user_last_name = user_last_name;
-		this.user_email = user_email;
-		this.user_role = user_role;
-		this.isBanned = isBanned;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.isbanned = isbanned;
+		this.roles = roles;
 	}
 
+	public int getUserID() {
+		return userID;
+	}
+
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public boolean isIsbanned() {
+		return isbanned;
+	}
+
+	public void setIsbanned(boolean isbanned) {
+		this.isbanned = isbanned;
+	}
+
+	public RolesModel getRoles() {
+		return roles;
+	}
+
+	public void setRoles(RolesModel roles) {
+		this.roles = roles;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (isBanned ? 1231 : 1237);
-		result = prime * result + sg_user_id;
-		result = prime * result + ((u_password == null) ? 0 : u_password.hashCode());
-		result = prime * result + ((user_email == null) ? 0 : user_email.hashCode());
-		result = prime * result + ((user_first_name == null) ? 0 : user_first_name.hashCode());
-		result = prime * result + ((user_last_name == null) ? 0 : user_last_name.hashCode());
-		result = prime * result + user_role;
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result + (isbanned ? 1231 : 1237);
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + userID;
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -56,31 +133,29 @@ public class UserModel {
 		if (getClass() != obj.getClass())
 			return false;
 		UserModel other = (UserModel) obj;
-		if (isBanned != other.isBanned)
-			return false;
-		if (sg_user_id != other.sg_user_id)
-			return false;
-		if (u_password == null) {
-			if (other.u_password != null)
+		if (email == null) {
+			if (other.email != null)
 				return false;
-		} else if (!u_password.equals(other.u_password))
+		} else if (!email.equals(other.email))
 			return false;
-		if (user_email == null) {
-			if (other.user_email != null)
+		if (firstName == null) {
+			if (other.firstName != null)
 				return false;
-		} else if (!user_email.equals(other.user_email))
+		} else if (!firstName.equals(other.firstName))
 			return false;
-		if (user_first_name == null) {
-			if (other.user_first_name != null)
+		if (isbanned != other.isbanned)
+			return false;
+		if (lastName == null) {
+			if (other.lastName != null)
 				return false;
-		} else if (!user_first_name.equals(other.user_first_name))
+		} else if (!lastName.equals(other.lastName))
 			return false;
-		if (user_last_name == null) {
-			if (other.user_last_name != null)
+		if (password == null) {
+			if (other.password != null)
 				return false;
-		} else if (!user_last_name.equals(other.user_last_name))
+		} else if (!password.equals(other.password))
 			return false;
-		if (user_role != other.user_role)
+		if (userID != other.userID)
 			return false;
 		if (username == null) {
 			if (other.username != null)
@@ -90,14 +165,14 @@ public class UserModel {
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
-		return "UserModel [sg_user_id=" + sg_user_id + ", username=" + username + ", u_password=" + u_password
-				+ ", user_first_name=" + user_first_name + ", user_last_name=" + user_last_name + ", user_email="
-				+ user_email + ", user_role=" + user_role + ", isBanned=" + isBanned + "]";
+		return "UserModel [userID=" + userID + ", username=" + username + ", password=" + password + ", firstName="
+				+ firstName + ", lastName=" + lastName + ", email=" + email + ", isbanned=" + isbanned + ", roles="
+				+ roles + "]";
 	}
-
     
+    
+	
     
 }

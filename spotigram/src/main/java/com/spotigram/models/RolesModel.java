@@ -1,9 +1,18 @@
 package com.spotigram.models;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="roles")
 public class RolesModel {
+	@Id
     private int sg_role_id;
+	
+	
     private String role_name;
     
+    @Transient
+    private UserModel users;
     
 	public RolesModel() {
 		super();
