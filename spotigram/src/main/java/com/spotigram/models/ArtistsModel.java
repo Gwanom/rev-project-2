@@ -1,5 +1,6 @@
 package com.spotigram.models;
 
+<<<<<<< HEAD
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,25 +11,98 @@ public class ArtistsModel {
 	@GeneratedValue
 	private int artist_id;
 	private String artist_name;
+=======
+import java.sql.Timestamp;
+
+import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.annotation.*;
+
+@Entity
+@Table(name="artists")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+public class ArtistsModel {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="artist_id")
+	private int id;
+	@Column(name="artist_name")
+	private String name;
+	@Column(name="date_start")
+	private Timestamp startDate;
+	@Column(name="date_finish")
+	private Timestamp endDate;
+>>>>>>> e2891e25fb02d965510d5164562ad9ab3f543b7e
 	
 	
 	public ArtistsModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public ArtistsModel(int artist_id, String artist_name) {
+
+
+	public ArtistsModel(int id, String name, Timestamp startDate, Timestamp endDate) {
 		super();
-		this.artist_id = artist_id;
-		this.artist_name = artist_name;
+		this.id = id;
+		this.name = name;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
+
+
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public Timestamp getStartDate() {
+		return startDate;
+	}
+
+
+	public void setStartDate(Timestamp startDate) {
+		this.startDate = startDate;
+	}
+
+
+	public Timestamp getEndDate() {
+		return endDate;
+	}
+
+
+	public void setEndDate(Timestamp endDate) {
+		this.endDate = endDate;
+	}
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + artist_id;
-		result = prime * result + ((artist_name == null) ? 0 : artist_name.hashCode());
+		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
 		return result;
 	}
+
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -38,31 +112,32 @@ public class ArtistsModel {
 		if (getClass() != obj.getClass())
 			return false;
 		ArtistsModel other = (ArtistsModel) obj;
-		if (artist_id != other.artist_id)
-			return false;
-		if (artist_name == null) {
-			if (other.artist_name != null)
+		if (endDate == null) {
+			if (other.endDate != null)
 				return false;
-		} else if (!artist_name.equals(other.artist_name))
+		} else if (!endDate.equals(other.endDate))
+			return false;
+		if (id != other.id)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (startDate == null) {
+			if (other.startDate != null)
+				return false;
+		} else if (!startDate.equals(other.startDate))
 			return false;
 		return true;
 	}
+
+
 	@Override
 	public String toString() {
-		return "ArtistsModel [artist_id=" + artist_id + ", artist_name=" + artist_name + "]";
+		return "ArtistsModel [id=" + id + ", name=" + name + ", startDate=" + startDate + ", endDate=" + endDate + "]";
 	}
-	public int getArtist_id() {
-		return artist_id;
-	}
-	public void setArtist_id(int artist_id) {
-		this.artist_id = artist_id;
-	}
-	public String getArtist_name() {
-		return artist_name;
-	}
-	public void setArtist_name(String artist_name) {
-		this.artist_name = artist_name;
-	}
+	
 	
 	
 }
