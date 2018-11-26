@@ -1,25 +1,34 @@
 package com.spotigram.models;
 
+import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Entity
+@Table(name="songs")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class SongsModel {
-    private int sg_song_id;
-    private String song_title;
+	
+	@Id
+	@GeneratedValue
+    private int sgSongId;
+    private String songTitle;
     private int album;
     private int artist;
     private String video;
-    private String audio_sample;
+    private String audioSample;
     
 	public SongsModel() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-	public SongsModel(int sg_song_id, String song_title, int album, int artist, String video, String audio_sample) {
+	public SongsModel(int sgSongId, String songTitle, int album, int artist, String video, String audioSample) {
 		super();
-		this.sg_song_id = sg_song_id;
-		this.song_title = song_title;
+		this.sgSongId = sgSongId;
+		this.songTitle = songTitle;
 		this.album = album;
 		this.artist = artist;
 		this.video = video;
-		this.audio_sample = audio_sample;
+		this.audioSample = audioSample;
 	}
 	@Override
 	public int hashCode() {
@@ -27,9 +36,9 @@ public class SongsModel {
 		int result = 1;
 		result = prime * result + album;
 		result = prime * result + artist;
-		result = prime * result + ((audio_sample == null) ? 0 : audio_sample.hashCode());
-		result = prime * result + sg_song_id;
-		result = prime * result + ((song_title == null) ? 0 : song_title.hashCode());
+		result = prime * result + ((audioSample == null) ? 0 : audioSample.hashCode());
+		result = prime * result + sgSongId;
+		result = prime * result + ((songTitle == null) ? 0 : songTitle.hashCode());
 		result = prime * result + ((video == null) ? 0 : video.hashCode());
 		return result;
 	}
@@ -46,17 +55,17 @@ public class SongsModel {
 			return false;
 		if (artist != other.artist)
 			return false;
-		if (audio_sample == null) {
-			if (other.audio_sample != null)
+		if (audioSample == null) {
+			if (other.audioSample != null)
 				return false;
-		} else if (!audio_sample.equals(other.audio_sample))
+		} else if (!audioSample.equals(other.audioSample))
 			return false;
-		if (sg_song_id != other.sg_song_id)
+		if (sgSongId != other.sgSongId)
 			return false;
-		if (song_title == null) {
-			if (other.song_title != null)
+		if (songTitle == null) {
+			if (other.songTitle != null)
 				return false;
-		} else if (!song_title.equals(other.song_title))
+		} else if (!songTitle.equals(other.songTitle))
 			return false;
 		if (video == null) {
 			if (other.video != null)
@@ -67,20 +76,20 @@ public class SongsModel {
 	}
 	@Override
 	public String toString() {
-		return "SongsModel [sg_song_id=" + sg_song_id + ", song_title=" + song_title + ", album=" + album + ", artist="
-				+ artist + ", video=" + video + ", audio_sample=" + audio_sample + "]";
+		return "SongsModel [sgSongId=" + sgSongId + ", songTitle=" + songTitle + ", album=" + album + ", artist="
+				+ artist + ", video=" + video + ", audioSample=" + audioSample + "]";
 	}
-	public int getSg_song_id() {
-		return sg_song_id;
+	public int getSgSongId() {
+		return sgSongId;
 	}
-	public void setSg_song_id(int sg_song_id) {
-		this.sg_song_id = sg_song_id;
+	public void setSgSongId(int sgSongId) {
+		this.sgSongId = sgSongId;
 	}
-	public String getSong_title() {
-		return song_title;
+	public String getSongTitle() {
+		return songTitle;
 	}
-	public void setSong_title(String song_title) {
-		this.song_title = song_title;
+	public void setSongTitle(String songTitle) {
+		this.songTitle = songTitle;
 	}
 	public int getAlbum() {
 		return album;
@@ -100,11 +109,11 @@ public class SongsModel {
 	public void setVideo(String video) {
 		this.video = video;
 	}
-	public String getAudio_sample() {
-		return audio_sample;
+	public String getAudioSample() {
+		return audioSample;
 	}
-	public void setAudio_sample(String audio_sample) {
-		this.audio_sample = audio_sample;
+	public void setAudioSample(String audioSample) {
+		this.audioSample = audioSample;
 	}
 
 }
