@@ -1,6 +1,13 @@
 package com.spotigram.models;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class ArtistsModel {
+	@Id
+	@GeneratedValue
 	private int artist_id;
 	private String artist_name;
 	

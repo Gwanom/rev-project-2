@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.annotation.*;
 @Entity
 @Table(name="users")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+
 public class UserModel {
 	
 	@Id
@@ -23,16 +25,24 @@ public class UserModel {
 	@Column(name="sg_user_id")
     private int userID; 
 	
+	@NotNull
     private String username;
-    
+	
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@Column(name="u_password")
+	@NotNull
     private String password;
+	
 	@Column(name="user_first_name")
+	@NotNull
     private String firstName;
+	
 	@Column(name="user_last_name")
+	@NotNull
     private String lastName;
+	
 	@Column(name="user_email")
+	@NotNull
     private String email;
 	
 	@JsonProperty(access = Access.WRITE_ONLY)

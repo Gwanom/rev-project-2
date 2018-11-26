@@ -21,6 +21,10 @@ public class UserServices {
 		
 		return userRepo.findByUsername(userName);
 	}
-
+	
+	public int save(UserModel user) {
+		userRepo.save(user);
+		return 1;
+	}
 
 }
