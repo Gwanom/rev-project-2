@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
-import com.spotigram.models.AlbumsModel;
 import com.spotigram.models.ArtistsModel;
 import com.spotigram.services.ArtistServices;
 
@@ -28,18 +27,5 @@ public class ArtistsControllers {
 	public List<ArtistsModel> findAll() {
 		System.out.println(artist.findAll());
 		return artist.findAll();
-	}
-	
-	@GetMapping("/id/{id}")
-	@ResponseBody
-	public ArtistsModel findById(@PathVariable int id) {
-		return artist.findById(id);
-	}
-	
-	@GetMapping("/name/{name}")
-	@ResponseBody
-	public List<ArtistsModel> findByName(@PathVariable String name) {
-		System.out.println(name);
-		return artist.findByName(name);
 	}
 }
