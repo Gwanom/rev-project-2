@@ -1,17 +1,4 @@
 package com.spotigram.models;
-
-<<<<<<< HEAD
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-@Entity
-public class ArtistsModel {
-	@Id
-	@GeneratedValue
-	private int artist_id;
-	private String artist_name;
-=======
 import java.sql.Timestamp;
 
 import javax.persistence.*;
@@ -33,7 +20,6 @@ public class ArtistsModel {
 	private Timestamp startDate;
 	@Column(name="date_finish")
 	private Timestamp endDate;
->>>>>>> e2891e25fb02d965510d5164562ad9ab3f543b7e
 	
 	
 	public ArtistsModel() {
