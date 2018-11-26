@@ -17,4 +17,8 @@ public class ArtistServices {
 	public List<ArtistsModel> findAll() {
 		return artistRepo.findAll();
 	}
+	
+	public List<ArtistsModel> findByName(String name) {
+		return artistRepo.findByName(name);
+	}
 }

@@ -28,4 +28,11 @@ public class ArtistsControllers {
 		System.out.println(artist.findAll());
 		return artist.findAll();
 	}
+	
+	@GetMapping("/{name}")
+	@ResponseBody
+	public List<ArtistsModel> findByName(@PathVariable String name) {
+		System.out.println(name);
+		return artist.findByName(name);
+	}
 }
