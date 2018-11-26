@@ -7,4 +7,6 @@ import java.util.List;
 @Repository
 public interface ArtistRepo extends JpaRepository<ArtistsModel, Integer> {
 	List<ArtistsModel> findByName(String name);
+	
+	ArtistsModel findById(int id);
 }
