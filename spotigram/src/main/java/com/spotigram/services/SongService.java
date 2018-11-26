@@ -17,4 +17,17 @@ public class SongService {
 		public List<SongsModel> findAll(){
 			return songRepo.findAll();
 		}
+		
+		public SongsModel findBySongTitle(String songTitle) {
+			return songRepo.findBySongTitle(songTitle);
+		}
+		
+		public SongsModel findBySgSongId(int sgSongId) {
+			return songRepo.findBySgSongId(sgSongId);
+		}
+
+		public int save(SongsModel sm) {
+			songRepo.save(sm);
+			return sm.getSgSongId();
+		}
 }

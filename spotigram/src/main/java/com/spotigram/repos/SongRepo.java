@@ -5,4 +5,7 @@ import com.spotigram.models.SongsModel;
 
 @Repository
 public interface SongRepo extends JpaRepository<SongsModel, Integer> {
+	SongsModel findBySongTitle(String songTitle);
+	
+	SongsModel findBySgSongId(int sgSongId);
 }
