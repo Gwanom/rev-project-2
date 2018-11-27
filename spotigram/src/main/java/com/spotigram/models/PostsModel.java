@@ -1,40 +1,72 @@
 package com.spotigram.models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Entity
+@Table(name="posts")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PostsModel {
-    private int sg_post_id;
-    private int author_id;
-    private int topic_song;
-    private int topic_album;
-    private int topic_artist;
+    
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="sg_post_id")
+	private int postId;
+	
+	@ManyToOne
+	@JoinColumn(name="author_id")
+    private UserModel author;
+	
+	@ManyToOne
+	@JoinColumn(name="topic_song")
+    private SongsModel topicSong;
+	
+	@ManyToOne
+	@JoinColumn(name="topic_album")
+    private AlbumsModel topicAlbum;
+	
+	@ManyToOne
+	@JoinColumn(name="topic_artist")
+    private ArtistsModel topicArtist;
+	
     private String content;
-    
-    
-	public PostsModel() {
+
+    public PostsModel() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-	public PostsModel(int sg_post_id, int author_id, int topic_song, int topic_album, int topic_artist,
-			String content) {
+
+	public PostsModel(int postId, UserModel author, SongsModel topicSong, AlbumsModel topicAlbum,
+			ArtistsModel topicArtist, String content) {
 		super();
-		this.sg_post_id = sg_post_id;
-		this.author_id = author_id;
-		this.topic_song = topic_song;
-		this.topic_album = topic_album;
-		this.topic_artist = topic_artist;
+		this.postId = postId;
+		this.author = author;
+		this.topicSong = topicSong;
+		this.topicAlbum = topicAlbum;
+		this.topicArtist = topicArtist;
 		this.content = content;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + author_id;
+		result = prime * result + ((author == null) ? 0 : author.hashCode());
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
-		result = prime * result + sg_post_id;
-		result = prime * result + topic_album;
-		result = prime * result + topic_artist;
-		result = prime * result + topic_song;
+		result = prime * result + postId;
+		result = prime * result + ((topicAlbum == null) ? 0 : topicAlbum.hashCode());
+		result = prime * result + ((topicArtist == null) ? 0 : topicArtist.hashCode());
+		result = prime * result + ((topicSong == null) ? 0 : topicSong.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -44,66 +76,81 @@ public class PostsModel {
 		if (getClass() != obj.getClass())
 			return false;
 		PostsModel other = (PostsModel) obj;
-		if (author_id != other.author_id)
+		if (author == null) {
+			if (other.author != null)
+				return false;
+		} else if (!author.equals(other.author))
 			return false;
 		if (content == null) {
 			if (other.content != null)
 				return false;
 		} else if (!content.equals(other.content))
 			return false;
-		if (sg_post_id != other.sg_post_id)
+		if (postId != other.postId)
 			return false;
-		if (topic_album != other.topic_album)
+		if (topicAlbum == null) {
+			if (other.topicAlbum != null)
+				return false;
+		} else if (!topicAlbum.equals(other.topicAlbum))
 			return false;
-		if (topic_artist != other.topic_artist)
+		if (topicArtist == null) {
+			if (other.topicArtist != null)
+				return false;
+		} else if (!topicArtist.equals(other.topicArtist))
 			return false;
-		if (topic_song != other.topic_song)
+		if (topicSong == null) {
+			if (other.topicSong != null)
+				return false;
+		} else if (!topicSong.equals(other.topicSong))
 			return false;
 		return true;
 	}
-	@Override
-	public String toString() {
-		return "PostsModel [sg_post_id=" + sg_post_id + ", author_id=" + author_id + ", topic_song=" + topic_song
-				+ ", topic_album=" + topic_album + ", topic_artist=" + topic_artist + ", content=" + content + "]";
+
+	public int getPostId() {
+		return postId;
 	}
-	public int getSg_post_id() {
-		return sg_post_id;
+
+	public void setPostId(int postId) {
+		this.postId = postId;
 	}
-	public void setSg_post_id(int sg_post_id) {
-		this.sg_post_id = sg_post_id;
+
+	public UserModel getAuthor() {
+		return author;
 	}
-	public int getAuthor_id() {
-		return author_id;
+
+	public void setAuthor(UserModel author) {
+		this.author = author;
 	}
-	public void setAuthor_id(int author_id) {
-		this.author_id = author_id;
+
+	public SongsModel getTopicSong() {
+		return topicSong;
 	}
-	public int getTopic_song() {
-		return topic_song;
+
+	public void setTopicSong(SongsModel topicSong) {
+		this.topicSong = topicSong;
 	}
-	public void setTopic_song(int topic_song) {
-		this.topic_song = topic_song;
+
+	public AlbumsModel getTopicAlbum() {
+		return topicAlbum;
 	}
-	public int getTopic_album() {
-		return topic_album;
+
+	public void setTopicAlbum(AlbumsModel topicAlbum) {
+		this.topicAlbum = topicAlbum;
 	}
-	public void setTopic_album(int topic_album) {
-		this.topic_album = topic_album;
+
+	public ArtistsModel getTopicArtist() {
+		return topicArtist;
 	}
-	public int getTopic_artist() {
-		return topic_artist;
+
+	public void setTopicArtist(ArtistsModel topicArtist) {
+		this.topicArtist = topicArtist;
 	}
-	public void setTopic_artist(int topic_artist) {
-		this.topic_artist = topic_artist;
-	}
+
 	public String getContent() {
 		return content;
 	}
+
 	public void setContent(String content) {
 		this.content = content;
 	}
-    
-    
-    
-
 }
