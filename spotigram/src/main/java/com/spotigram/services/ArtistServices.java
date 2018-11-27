@@ -22,7 +22,12 @@ public class ArtistServices {
 		return artistRepo.findById(id);
 	}
 	
-	public List<ArtistsModel> findByName(String name) {
+	public ArtistsModel findByName(String name) {
 		return artistRepo.findByName(name);
+	}
+
+	public int save(ArtistsModel am) {
+		artistRepo.save(am);
+		return am.getId();
 	}
 }
