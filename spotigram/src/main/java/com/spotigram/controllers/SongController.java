@@ -45,14 +45,14 @@ public class SongController {
 		return songService.save(sm);
 	}
 	
-	@GetMapping("/{title}")
+	@GetMapping("/title/{title}")
 	@ResponseBody
 	public SongsModel findByName(@PathVariable String title) {
 		System.out.println(title);
 		return songService.findBySongTitle(title);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/id/{id}")
 	@ResponseBody
 	public SongsModel findBySgSongId(@PathVariable int id) {
 		System.out.println(id);
