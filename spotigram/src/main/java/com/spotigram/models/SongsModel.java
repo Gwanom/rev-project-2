@@ -11,37 +11,49 @@ public class SongsModel {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int sgSongId;
+	@Column(name="sg_song_id")
+    private int songId;
     private String songTitle;
-    private int album;
-    private int artist;
+    
+    @ManyToOne
+    @JoinColumn(name="album")
+    private AlbumsModel album;
+    
+    @ManyToOne
+    @JoinColumn(name="artist")
+    private ArtistsModel artist;
+    
     private String video;
     private String audioSample;
     
 	public SongsModel() {
 		super();
 	}
-	public SongsModel(int sgSongId, String songTitle, int album, int artist, String video, String audioSample) {
+	
+	public SongsModel(int songId, String songTitle, AlbumsModel album, ArtistsModel artist, String video,
+			String audioSample) {
 		super();
-		this.sgSongId = sgSongId;
+		this.songId = songId;
 		this.songTitle = songTitle;
 		this.album = album;
 		this.artist = artist;
 		this.video = video;
 		this.audioSample = audioSample;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + album;
-		result = prime * result + artist;
+		result = prime * result + ((album == null) ? 0 : album.hashCode());
+		result = prime * result + ((artist == null) ? 0 : artist.hashCode());
 		result = prime * result + ((audioSample == null) ? 0 : audioSample.hashCode());
-		result = prime * result + sgSongId;
+		result = prime * result + songId;
 		result = prime * result + ((songTitle == null) ? 0 : songTitle.hashCode());
 		result = prime * result + ((video == null) ? 0 : video.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -51,16 +63,22 @@ public class SongsModel {
 		if (getClass() != obj.getClass())
 			return false;
 		SongsModel other = (SongsModel) obj;
-		if (album != other.album)
+		if (album == null) {
+			if (other.album != null)
+				return false;
+		} else if (!album.equals(other.album))
 			return false;
-		if (artist != other.artist)
+		if (artist == null) {
+			if (other.artist != null)
+				return false;
+		} else if (!artist.equals(other.artist))
 			return false;
 		if (audioSample == null) {
 			if (other.audioSample != null)
 				return false;
 		} else if (!audioSample.equals(other.audioSample))
 			return false;
-		if (sgSongId != other.sgSongId)
+		if (songId != other.songId)
 			return false;
 		if (songTitle == null) {
 			if (other.songTitle != null)
@@ -76,44 +94,56 @@ public class SongsModel {
 	}
 	@Override
 	public String toString() {
-		return "SongsModel [sgSongId=" + sgSongId + ", songTitle=" + songTitle + ", album=" + album + ", artist="
+		return "SongsModel [songId=" + songId + ", songTitle=" + songTitle + ", album=" + album + ", artist="
 				+ artist + ", video=" + video + ", audioSample=" + audioSample + "]";
 	}
-	public int getSgSongId() {
-		return sgSongId;
+
+	public int getSongId() {
+		return songId;
 	}
-	public void setSgSongId(int sgSongId) {
-		this.sgSongId = sgSongId;
+
+	public void setSongId(int songId) {
+		this.songId = songId;
 	}
+
 	public String getSongTitle() {
 		return songTitle;
 	}
+
 	public void setSongTitle(String songTitle) {
 		this.songTitle = songTitle;
 	}
-	public int getAlbum() {
+
+	public AlbumsModel getAlbum() {
 		return album;
 	}
-	public void setAlbum(int album) {
+
+	public void setAlbum(AlbumsModel album) {
 		this.album = album;
 	}
-	public int getArtist() {
+
+	public ArtistsModel getArtist() {
 		return artist;
 	}
-	public void setArtist(int artist) {
+
+	public void setArtist(ArtistsModel artist) {
 		this.artist = artist;
 	}
+
 	public String getVideo() {
 		return video;
 	}
+
 	public void setVideo(String video) {
 		this.video = video;
 	}
+
 	public String getAudioSample() {
 		return audioSample;
 	}
+
 	public void setAudioSample(String audioSample) {
 		this.audioSample = audioSample;
 	}
-
+	
 }

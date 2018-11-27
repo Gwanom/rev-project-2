@@ -22,12 +22,12 @@ public class SongService {
 			return songRepo.findBySongTitle(songTitle);
 		}
 		
-		public SongsModel findBySgSongId(int sgSongId) {
-			return songRepo.findBySgSongId(sgSongId);
+		public SongsModel findBySgSongId(int songId) {
+			return songRepo.findBySongId(songId);
 		}
 
 		public int save(SongsModel sm) {
 			songRepo.save(sm);
-			return sm.getSgSongId();
+			return sm.getSongId();
 		}
 }
