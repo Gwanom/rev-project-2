@@ -1,9 +1,15 @@
 package com.spotigram.models;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.fasterxml.jackson.annotation.*;
 
 @Entity
 @Table(name="albums")
@@ -15,15 +21,17 @@ public class AlbumsModel {
     private int id;
 	@Column(name="album_title")
     private String title;
-	@Column(name="artist")
-    private int artist;
+	
+	@ManyToOne
+	@JoinColumn(name="artist") 
+    private ArtistsModel artist;
 	
 	public AlbumsModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public AlbumsModel(int id, String title, int artist) {
+	public AlbumsModel(int id, String title, ArtistsModel artist) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -46,11 +54,11 @@ public class AlbumsModel {
 		this.title = title;
 	}
 
-	public int getArtist() {
+	public ArtistsModel getArtist() {
 		return artist;
 	}
 
-	public void setArtist(int artist) {
+	public void setArtist(ArtistsModel artist) {
 		this.artist = artist;
 	}
 
@@ -58,7 +66,7 @@ public class AlbumsModel {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + artist;
+		result = prime * result + ((artist == null) ? 0 : artist.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
@@ -73,7 +81,10 @@ public class AlbumsModel {
 		if (getClass() != obj.getClass())
 			return false;
 		AlbumsModel other = (AlbumsModel) obj;
-		if (artist != other.artist)
+		if (artist == null) {
+			if (other.artist != null)
+				return false;
+		} else if (!artist.equals(other.artist))
 			return false;
 		if (id != other.id)
 			return false;
