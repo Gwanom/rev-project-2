@@ -11,6 +11,7 @@ import com.spotigram.models.UserModel;
 @Repository
 public interface UserRepo extends JpaRepository<UserModel, Integer>{
 	List<UserModel> findByUsername(String userName);
+	List<UserModel> findByEmail(String email);
 	
 	// queries like these require for them to be void or have an integer value
 	//@Query(value = "INSERT INTO users (username,u_password,user_first_name,user_last_name,user_email,user_role,isbanned) VALUES (:username,:password,:firstname,:lastname,:email,:role,:isbanned)", nativeQuery=true)

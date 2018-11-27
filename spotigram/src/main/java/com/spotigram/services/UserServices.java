@@ -26,5 +26,8 @@ public class UserServices {
 		userRepo.save(user);
 		return 1;
 	}
+	public List<UserModel> findByEmail(String email){
+		return userRepo.findByEmail(email);
+	}
 
 }
