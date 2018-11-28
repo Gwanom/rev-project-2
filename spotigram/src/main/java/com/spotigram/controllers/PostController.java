@@ -21,7 +21,6 @@ import com.spotigram.services.UserServices;
 public class PostController {
 	
 	private PostService postService;
-	private UserServices userService;
 	
 	public PostController() {
 		super();
@@ -43,11 +42,8 @@ public class PostController {
 	@GetMapping("/author/{userName}")
 	@ResponseBody
 	public Object findByUser(@PathVariable String userName){
-		Object u = userService.findByUser("gwanom");
-		System.out.println(userName);
-//		List<PostsModel> results = postService.findByAuthor(u.get(0));
-//		System.out.println(results);
-		return u;
+		List<PostsModel> results = postService.findByAuthor(userName);
+		return results;
 	}
 	
 	@GetMapping("/song/{songId}")

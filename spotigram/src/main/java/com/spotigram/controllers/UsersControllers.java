@@ -24,9 +24,10 @@ import com.spotigram.utilities.PasswordHelper;
 public class UsersControllers {
 	private UserServices user;	
 	private JWTHelper jwt = new JWTHelper();
-	private ObjectNode result = JsonNodeFactory.instance.objectNode();
+	private ObjectNode result;
 	private HttpHeaders responseHeader = new HttpHeaders();
 	private ObjectMapper error = new ObjectMapper();
+	
 	public UsersControllers() {
 		super();
 	}
@@ -41,7 +42,7 @@ public class UsersControllers {
 	public Object renewToken(@RequestBody UserModel request, @RequestHeader("Authentication") String auth) {
 		List<UserModel> username = user.findByUser(request.getUsername());
 		if(!username.isEmpty()) {
-			if(PasswordHelper.Hasher.passHasher(request.getPassword(), username.get(0).getPassword())) {
+			if(comparePasswords(request.getPassword(), username.get(0).getPassword())) {
 				responseHeader.set("Authentication", jwt.renewToken(request.getUsername()));
 				return new ResponseEntity<String>("",responseHeader,HttpStatus.CREATED);
 			}
@@ -68,45 +69,23 @@ public class UsersControllers {
 	@SuppressWarnings("deprecation")
 	@PostMapping("/login")
 	public Object findByUser(@RequestBody UserModel requestedUser){
-		List<UserModel> username = user.findByUser(requestedUser.getUsername());
-		List<UserModel> email = user.findByEmail(requestedUser.getEmail());
-		
-		
+		result = JsonNodeFactory.instance.objectNode();
+		String val = (requestedUser.getUsername() != null) ?  requestedUser.getUsername(): requestedUser.getEmail();
+		List<UserModel> username = (requestedUser.getUsername() != null) ?  user.findByUser(requestedUser.getUsername()) : user.findByEmail(requestedUser.getEmail()) ;
 		try {
-			if((!username.isEmpty()) && email.isEmpty()) {
-				if(PasswordHelper.Hasher.passHasher(requestedUser.getPassword(), username.get(0).getPassword())) {
-					//add some logic here to return all the items from that respective user
-					result.put("info", new ObjectMapper().readTree(new ObjectMapper().writeValueAsString(username)));
-					result.put("comments", "");
-					result.put("threads", "");
-					responseHeader.set("Authentication", jwt.generateToken(username.get(0).getUsername(),false));
-					
-					return new ResponseEntity<Object>(result,responseHeader,HttpStatus.ACCEPTED);
-				}
-				else {
-					result.put("error", "Wrong Password");
-					return new ResponseEntity<Object>(result,HttpStatus.UNAUTHORIZED);
-				}
+			if(comparePasswords(requestedUser.getPassword(), username.get(0).getPassword())) {
+				result.put("info", new ObjectMapper().readTree(new ObjectMapper().writeValueAsString(username)));
+				result.put("comments", "");
+				result.put("threads", "");
+				responseHeader.set("Authentication", jwt.generateToken(username.get(0).getUsername(),false));
+				
+				return new ResponseEntity<Object>(result,responseHeader,HttpStatus.ACCEPTED);			
 			}
-			if((!email.isEmpty()) && username.isEmpty()) {
-				if(PasswordHelper.Hasher.passHasher(requestedUser.getPassword(), email.get(0).getPassword())) {
-					//add some logic here to return all the items from that respective user
-					result.put("info", new ObjectMapper().readTree(new ObjectMapper().writeValueAsString(email)));
-					result.put("comments", "");
-					result.put("threads", "");
-					responseHeader.set("Authentication", jwt.generateToken(email.get(0).getEmail(),false));
-					
-					return new ResponseEntity<Object>(result,responseHeader,HttpStatus.ACCEPTED);
-				}
-				else {
-					result.put("error", "Wrong Password");
-					return new ResponseEntity<Object>(result,HttpStatus.UNAUTHORIZED);
-				}
+			else{
+				result.put("error", "Wrong Password");
+				return new ResponseEntity<Object>(result,HttpStatus.UNAUTHORIZED);
 			}
-			else {
-				result.put("error", "user does not exist");
-				return result;
-			}
+			
 		}catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -114,9 +93,15 @@ public class UsersControllers {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return null;
+		result.put("error", "user does not exist");
+		return result;
 	}
+	
+	private Boolean comparePasswords(String storedPassword, String incomingPassword) {
+		return PasswordHelper.Hasher.passHasher(storedPassword, incomingPassword);
+	}
+
+	
 	
 	@PostMapping("/register")
 	public Object registerUser(@Validated @RequestBody UserModel requestedUser){
@@ -169,14 +154,16 @@ public class UsersControllers {
 		return null;
 	}
 	
+
+	
 	
 	@ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
 	public ResponseEntity<Object> validateHandler(){
-		ObjectNode node = JsonNodeFactory.instance.objectNode();
+		result = JsonNodeFactory.instance.objectNode();
 		
-		node.put("error", "Fields are missing");
+		result.put("error", "Fields are missing");
 		try {
-			return new ResponseEntity<Object>(error.writeValueAsString(node), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<Object>(error.writeValueAsString(result), HttpStatus.INTERNAL_SERVER_ERROR);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -189,8 +176,8 @@ public class UsersControllers {
 		result.put("error", "Authentication Header is missing...");
 		return new ResponseEntity<Object>(result,HttpStatus.I_AM_A_TEAPOT);
 	}
-	@ExceptionHandler(RuntimeException.class)
-	public ResponseEntity<String> exceptionHandler() {
-		return new ResponseEntity<String>("An error has occured", HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+//	@ExceptionHandler(RuntimeException.class)
+//	public ResponseEntity<String> exceptionHandler() {
+//		return new ResponseEntity<String>("An error has occured", HttpStatus.INTERNAL_SERVER_ERROR);
+//	}
 }
