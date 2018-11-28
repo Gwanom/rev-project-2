@@ -3,6 +3,7 @@ package com.spotigram.controllers;
 import java.io.IOException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +23,10 @@ import com.spotigram.utilities.PasswordHelper;
 @RequestMapping("users")
 public class UsersControllers {
 	private UserServices user;	
+	private JWTHelper jwt = new JWTHelper();
+	private ObjectNode result = JsonNodeFactory.instance.objectNode();
+	private HttpHeaders responseHeader = new HttpHeaders();
+	private ObjectMapper error = new ObjectMapper();
 	public UsersControllers() {
 		super();
 	}
@@ -31,20 +36,42 @@ public class UsersControllers {
 		super();
 		this.user = user;
 	}
+	
+	@PostMapping("renew")
+	public Object renewToken(@RequestBody UserModel request, @RequestHeader("Authentication") String auth) {
+		List<UserModel> username = user.findByUser(request.getUsername());
+		if(!username.isEmpty()) {
+			if(PasswordHelper.Hasher.passHasher(request.getPassword(), username.get(0).getPassword())) {
+				responseHeader.set("Authentication", jwt.renewToken(request.getUsername()));
+				return new ResponseEntity<String>("",responseHeader,HttpStatus.CREATED);
+			}
+			else {
+				result.put("error", "wrong password");
+				return new ResponseEntity<Object>(result,HttpStatus.UNAUTHORIZED);
+			}
+		}
+		return null;
+	}
+	
 
 	@GetMapping
-	public List<UserModel> findAll(){
-		String a = JWTHelper.generateToken("anorexicseal");
-		JWTHelper.verifyToken("anorexicseals", "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCIsInJvbGUiOiJ1c2VyIn0.eyJpc3MiOiJhbm9yZXhpY3NlYWwiLCJleHAiOjE1NDMzODQ4MDAsImlhdCI6MTU0MzI5ODQwMH0.tS6DiSuD5VluvI-59al5aTybrbNEJ84SUWtFvDgiKMpMGb1aSOFkuKL6ySRGum0raGNx9qTtREmyo5bf0PTfXA");
+	public Object findAll(@RequestHeader("Authentication") String auth){
+		Boolean renew = jwt.verifyToken("anorexicseal", auth);
+		if(renew) {
+			result.put("error", "renew token");
+			return result;
+		}
+		
 		return user.findAll();
 	}
 	
 	@SuppressWarnings("deprecation")
 	@PostMapping("/login")
-	public Object findByUser(@RequestBody UserModel requestedUser, @RequestHeader("Authentication") String auth){
+	public Object findByUser(@RequestBody UserModel requestedUser){
 		List<UserModel> username = user.findByUser(requestedUser.getUsername());
 		List<UserModel> email = user.findByEmail(requestedUser.getEmail());
-		ObjectNode result = JsonNodeFactory.instance.objectNode();
+		
+		
 		try {
 			if((!username.isEmpty()) && email.isEmpty()) {
 				if(PasswordHelper.Hasher.passHasher(requestedUser.getPassword(), username.get(0).getPassword())) {
@@ -52,11 +79,13 @@ public class UsersControllers {
 					result.put("info", new ObjectMapper().readTree(new ObjectMapper().writeValueAsString(username)));
 					result.put("comments", "");
 					result.put("threads", "");
-					return result;
+					responseHeader.set("Authentication", jwt.generateToken(username.get(0).getUsername(),false));
+					
+					return new ResponseEntity<Object>(result,responseHeader,HttpStatus.ACCEPTED);
 				}
 				else {
 					result.put("error", "Wrong Password");
-					return result;
+					return new ResponseEntity<Object>(result,HttpStatus.UNAUTHORIZED);
 				}
 			}
 			if((!email.isEmpty()) && username.isEmpty()) {
@@ -65,11 +94,13 @@ public class UsersControllers {
 					result.put("info", new ObjectMapper().readTree(new ObjectMapper().writeValueAsString(email)));
 					result.put("comments", "");
 					result.put("threads", "");
-					return result;
+					responseHeader.set("Authentication", jwt.generateToken(email.get(0).getEmail(),false));
+					
+					return new ResponseEntity<Object>(result,responseHeader,HttpStatus.ACCEPTED);
 				}
 				else {
 					result.put("error", "Wrong Password");
-					return result;
+					return new ResponseEntity<Object>(result,HttpStatus.UNAUTHORIZED);
 				}
 			}
 			else {
@@ -136,15 +167,13 @@ public class UsersControllers {
 			
 		}
 		return null;
-		
-
 	}
 	
 	
 	@ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
 	public ResponseEntity<Object> validateHandler(){
 		ObjectNode node = JsonNodeFactory.instance.objectNode();
-		ObjectMapper error = new ObjectMapper();
+		
 		node.put("error", "Fields are missing");
 		try {
 			return new ResponseEntity<Object>(error.writeValueAsString(node), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -155,7 +184,11 @@ public class UsersControllers {
 		return null;
 	}
 	
-	
+	@ExceptionHandler(org.springframework.web.bind.MissingRequestHeaderException.class)
+	public ResponseEntity<Object> MissingAuthenticationHeader(){
+		result.put("error", "Authentication Header is missing...");
+		return new ResponseEntity<Object>(result,HttpStatus.I_AM_A_TEAPOT);
+	}
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<String> exceptionHandler() {
 		return new ResponseEntity<String>("An error has occured", HttpStatus.INTERNAL_SERVER_ERROR);
