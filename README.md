@@ -1,9 +1,4 @@
-When working on the project:
-- Create a new local branch on your machine that tracks your local dev branch
-- After finishing work, commit only files that were changed
-- Merge your branch back into your local dev
-- Push commits from local/dev to remote/dev
-
+# Spotigram Server
 ## Endpoints:
 Our server is hosted on an Amazon Elastic Beanstalk; it's base URL is
 http://spotigram-env-1.m2phmu28yw.us-east-2.elasticbeanstalk.com
