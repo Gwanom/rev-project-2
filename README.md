@@ -1,5 +1,3 @@
-# This is the development branch for the backend
-
 When working on the project:
 - Create a new local branch on your machine that tracks your local dev branch
 - After finishing work, commit only files that were changed
@@ -7,6 +5,9 @@ When working on the project:
 - Push commits from local/dev to remote/dev
 
 ## Endpoints:
+Our server is hosted on an Amazon Elastic Beanstalk; it's base URL is
+http://spotigram-env-1.m2phmu28yw.us-east-2.elasticbeanstalk.com
+**No context is needed before the endpoints**
 - User Controller:
   - `/users`
     - GET: returns all users in the database <sup>A</sup>
