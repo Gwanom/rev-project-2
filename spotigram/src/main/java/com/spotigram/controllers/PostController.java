@@ -46,26 +46,26 @@ public class PostController {
 		return results;
 	}
 	
-	@GetMapping("/song/{songId}")
+	@GetMapping("/song/{songTitle}")
 	@ResponseBody
-	public List<PostsModel> findByTopicSong(@PathVariable int songId){
-		List<PostsModel> results = postService.findByTopicSong(songId);
+	public List<PostsModel> findByTopicSong(@PathVariable String songTitle){
+		List<PostsModel> results = postService.findByTopicSong(songTitle);
 		System.out.println(results);
 		return results;
 	}
 	
-	@GetMapping("/album/{albumId}")
+	@GetMapping("/album/{album}")
 	@ResponseBody
-	public List<PostsModel> findByTopicAlbum(@PathVariable int albumId){
-		List<PostsModel> results = postService.findByTopicSong(albumId);
+	public List<PostsModel> findByTopicAlbum(@PathVariable String album){
+		List<PostsModel> results = postService.findByTopicAlbum(album);
 		System.out.println(results);
 		return results;
 	}
 	
-	@GetMapping("/artist/{artistId}")
+	@GetMapping("/artist/{artist}")
 	@ResponseBody
-	public List<PostsModel> findByTopicArtist(@PathVariable int artistId){
-		List<PostsModel> results = postService.findByTopicSong(artistId);
+	public List<PostsModel> findByTopicArtist(@PathVariable String artist){
+		List<PostsModel> results = postService.findByTopicArtist(artist);
 		System.out.println(results);
 		return results;
 	}

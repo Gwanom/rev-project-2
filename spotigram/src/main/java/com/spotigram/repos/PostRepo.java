@@ -4,15 +4,18 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.spotigram.models.AlbumsModel;
+import com.spotigram.models.ArtistsModel;
 import com.spotigram.models.PostsModel;
+import com.spotigram.models.SongsModel;
 import com.spotigram.models.UserModel;
 
 public interface PostRepo extends JpaRepository<PostsModel, Integer> {
 	List<PostsModel> findByAuthor(UserModel author);
 	
-	List<PostsModel> findByTopicSong(int topicSong);
+	List<PostsModel> findByTopicSong(SongsModel topicSong);
 	
-	List<PostsModel> findByTopicAlbum(int topicAlbum);
+	List<PostsModel> findByTopicAlbum(AlbumsModel topicAlbum);
 	
-	List<PostsModel> findByTopicArtist(int topicArtist);
+	List<PostsModel> findByTopicArtist(ArtistsModel topicArtist);
 }

@@ -5,9 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spotigram.models.AlbumsModel;
+import com.spotigram.models.ArtistsModel;
 import com.spotigram.models.PostsModel;
+import com.spotigram.models.SongsModel;
 import com.spotigram.models.UserModel;
+import com.spotigram.repos.AlbumRepo;
+import com.spotigram.repos.ArtistRepo;
 import com.spotigram.repos.PostRepo;
+import com.spotigram.repos.SongRepo;
 import com.spotigram.repos.UserRepo;
 
 @Service
@@ -19,6 +25,15 @@ public class PostService {
 	@Autowired
 	private UserRepo userRepo;
 	
+	@Autowired
+	private SongRepo songRepo;
+	
+	@Autowired
+	private AlbumRepo albumRepo;
+	
+	@Autowired
+	private ArtistRepo artistRepo;
+	
 	public List<PostsModel> findAll(){
 		return postRepo.findAll();
 	}
@@ -28,16 +43,19 @@ public class PostService {
 		return postRepo.findByAuthor(user.get(0));
 	}
 	
-	public List<PostsModel> findByTopicSong(int topicSong){
-		return postRepo.findByTopicSong(topicSong);
+	public List<PostsModel> findByTopicSong(String songTitle){
+		SongsModel s = songRepo.findBySongTitle(songTitle);
+		return postRepo.findByTopicSong(s);
 	}
 	
-	public List<PostsModel> findByTopicAlbum(int topicAlbum){
-		return postRepo.findByTopicAlbum(topicAlbum);
+	public List<PostsModel> findByTopicAlbum(String title){
+		List<AlbumsModel> a = albumRepo.findByTitle(title);
+		return postRepo.findByTopicAlbum(a.get(0));
 	}
 	
-	public List<PostsModel> findByTopicArtist(int topicArtist){
-		return postRepo.findByTopicArtist(topicArtist);
+	public List<PostsModel> findByTopicArtist(String artist){
+		ArtistsModel a = artistRepo.findByName(artist);
+		return postRepo.findByTopicArtist(a);
 	}
 	
 }
