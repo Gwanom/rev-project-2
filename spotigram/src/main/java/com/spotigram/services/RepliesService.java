@@ -24,6 +24,11 @@ public class RepliesService {
 		return repliesRepo.findAll();
 	}
 	
+	public int save(RepliesModel rm) {
+		repliesRepo.save(rm);
+		return rm.getReplyId();
+	}
+	
 	public List<RepliesModel> findByParent(int parentId){
 		System.out.println("repliesservice.findbyparent");
 		PostsModel parent = postRepo.findByPostId(parentId);
