@@ -3,6 +3,7 @@ package com.spotigram.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import com.spotigram.models.AlbumsModel;
@@ -27,6 +28,13 @@ private AlbumServices album;
 	public List<AlbumsModel> findAll() {
 		System.out.println(album.findAll());
 		return album.findAll();
+	}
+	
+	@PostMapping
+	@ResponseBody
+	@ResponseStatus(code=HttpStatus.CREATED)
+	public int saveAlbumsModel(AlbumsModel am) {
+		return album.save(am);
 	}
 	
 	@GetMapping("/id/{id}")
