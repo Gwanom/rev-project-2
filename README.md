@@ -1,6 +1,6 @@
 # Spotigram Server
 ## Endpoints:
-Our server is hosted on an Amazon Elastic Beanstalk; it's base URL is
+Our server is hosted on an Amazon Elastic Beanstalk; its base URL is
 http://spotigram-env-1.m2phmu28yw.us-east-2.elasticbeanstalk.com
 **No context is needed before the endpoints**
 - User Controller:
