@@ -11,6 +11,8 @@ import com.spotigram.models.SongsModel;
 import com.spotigram.models.UserModel;
 
 public interface PostRepo extends JpaRepository<PostsModel, Integer> {
+	PostsModel findByPostId(int postId);
+	
 	List<PostsModel> findByAuthor(UserModel author);
 	
 	List<PostsModel> findByTopicSong(SongsModel topicSong);

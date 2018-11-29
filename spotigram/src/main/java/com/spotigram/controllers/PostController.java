@@ -39,6 +39,11 @@ public class PostController {
 		return results;
 	}
 	
+	@GetMapping("/id/{postId}")
+	public PostsModel findByPostId(@PathVariable int postId) {
+		return postService.findByPostId(postId);
+	}
+	
 	@GetMapping("/author/{userName}")
 	@ResponseBody
 	public Object findByUser(@PathVariable String userName){

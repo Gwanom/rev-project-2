@@ -12,21 +12,21 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "replies")
+@Table(name="replies")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class RepliesModel {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "sg_reply_id")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="sg_reply_id")
 	private int replyId;
 
 	@ManyToOne
-	@JoinColumn(name = "parent")
+	@JoinColumn(name="parent")
 	private PostsModel parent;
 
 	@ManyToOne
-	@JoinColumn(name = "author")
+	@JoinColumn(name="author")
 	private UserModel author;
 
 	private String content;
@@ -81,6 +81,13 @@ public class RepliesModel {
 		if (replyId != other.replyId)
 			return false;
 		return true;
+	}
+	
+
+	@Override
+	public String toString() {
+		return "RepliesModel [replyId=" + replyId + ", parent=" + parent.getPostId() + 
+			   ", author=" + author.getUsername() + ", content=" + content + "]";
 	}
 
 	public int getReplyId() {

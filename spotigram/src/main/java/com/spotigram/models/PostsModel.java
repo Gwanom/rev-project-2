@@ -106,6 +106,12 @@ public class PostsModel {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "PostsModel [postId=" + postId + ", author=" + author.getUsername() + 
+				", content=" + content + "]";
+	}
+
 	public int getPostId() {
 		return postId;
 	}
