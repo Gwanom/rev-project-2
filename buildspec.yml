@@ -7,4 +7,4 @@ phases:
 artifacts:
   files:
     - '**/*'
-  base-directory: 'spotigram/target/spotigram'
+  base-directory: 'spotigram/target'
