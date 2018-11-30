@@ -57,7 +57,7 @@ public class UsersControllers {
 
 	@GetMapping
 	public Object findAll(@RequestHeader("Authentication") String auth){
-		Boolean renew = jwt.verifyToken("anorexicseal", auth);
+		Boolean renew = jwt.verifyToken(auth);
 		if(renew) {
 			result.put("error", "renew token");
 			return result;
