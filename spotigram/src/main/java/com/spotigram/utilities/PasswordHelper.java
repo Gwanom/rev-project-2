@@ -24,4 +24,20 @@ public class PasswordHelper {
 		return null;
 
 	}
+	
+	public String newUser(String password) {
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("SHA-512");
+			byte[] digestedMessage = md.digest(password.getBytes());
+			BigInteger bi = new BigInteger(1, digestedMessage);
+			String hashedPassword = bi.toString(16);
+			return hashedPassword;
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+
+	}
 }
