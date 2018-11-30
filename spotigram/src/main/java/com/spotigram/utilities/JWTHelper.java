@@ -27,7 +27,7 @@ public class JWTHelper {
 		LocalDate expiration = LocalDate.of(
 				today.getYear(), 
 				today.getMonthValue(), 
-				today.getDayOfMonth()+1
+				today.getDayOfMonth()
 				);
 		String token = JWT.create().
 				withIssuer(username).
@@ -46,17 +46,19 @@ public class JWTHelper {
 	 * if a @userToken is empty or an invalid token, it will return a false that will be processed 
 	 * assigns a new one if it detects that the token has expired
 	 * */
-	public  Boolean verifyToken(String username, String userToken) {
-		log.info("Verifying user: " + username + " with a jwt token of " + userToken);
+	public  Boolean verifyToken(String userToken) {
+		
 		try {
-			JWTVerifier verifier = JWT.require(algo).withIssuer(username).build();
+			JWTVerifier verifier = JWT.require(algo).build();
 			DecodedJWT jwt = verifier.verify(userToken);
+			String username = jwt.getIssuer();
+			log.info("Verifying user: " + username + " with a jwt token of " + userToken);
 			log.info("User " + username + " was verified successfully");
 			return false;
 		}catch (JWTDecodeException exception){
-			System.out.println("User: "+ username + " tried to do authenticate with an invalid token");
+			System.out.println("Someone using token: "+ userToken + " tried to do authenticate with an invalid token");
 		}catch(InvalidClaimException exception2) {
-			System.out.println("User: "+ username + " tried to do authenticate with an invalid token");
+			System.out.println("Someone using token: "+ userToken + " tried to do authenticate with an invalid token");
 		}
 		return true;
 	}
