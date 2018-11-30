@@ -144,7 +144,7 @@ public class UsersControllers {
 			newUser.setLastName(requestedUser.getLastName());
 			newUser.setIsbanned(false);
 			newUser.setUsername(requestedUser.getUsername());
-			newUser.setPassword(requestedUser.getPassword());
+			newUser.setPassword(PasswordHelper.Hasher.newUser(requestedUser.getPassword()));
 			role.setRole_name("user");
 			role.setSg_role_id(1);
 			newUser.setRoles(role);
