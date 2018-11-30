@@ -32,7 +32,7 @@ public class JWTHelper {
 		String token = JWT.create().
 				withIssuer(username).
 				withIssuedAt(java.sql.Date.valueOf(today)).
-				withExpiresAt(java.sql.Date.valueOf(expiration)).
+				withExpiresAt(new java.util.Date(System.currentTimeMillis() + 86400000)).
 				sign(algo);
 		if(!renew) {
 			log.info("Assigning user: " + username + " with token: " + token );
