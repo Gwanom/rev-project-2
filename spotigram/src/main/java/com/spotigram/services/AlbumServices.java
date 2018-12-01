@@ -18,6 +18,11 @@ public class AlbumServices {
 		return albumRepo.findAll();
 	}
 	
+	public int save(AlbumsModel am) {
+		albumRepo.save(am);
+		return am.getId();
+	}
+	
 	public AlbumsModel findById(int id) {
 		return albumRepo.findById(id);
 	}

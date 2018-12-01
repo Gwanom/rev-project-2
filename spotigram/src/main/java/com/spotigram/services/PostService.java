@@ -39,6 +39,11 @@ public class PostService {
 		return postRepo.findAll();
 	}
 	
+	public int save(PostsModel pm) {
+		postRepo.save(pm);
+		return pm.getPostId();
+	}
+	
 	public PostsModel findByPostId(int postId) {
 		return postRepo.findByPostId(postId);
 	}

@@ -20,6 +20,25 @@ When working on the project:
 - Post Controller:
   - `/posts`
     - GET: returns all posts
+    - POST: saves a new post to the database. Example JSON object for body:
+      ```JSON
+      {
+        "postId": 0,
+        "author": {
+            "userID": 2
+        },
+        "topicSong": {
+          "songId": 1
+        },
+        "topicAlbum": {
+          "id": 1
+        },
+        "topicArtist": {
+          "id": 1
+        },
+        "content": "here's a sample post about beyoncé's song 'Daddy Issues'"
+      }
+      ```
   - `/posts/id/{postId}`
     - GET: returns the post with the given ID
   - `/posts/author/{userName}`
@@ -34,6 +53,19 @@ When working on the project:
 - Reply Controller:
   - `/replies`
     - GET: returns all replies
+    - POST: saves a new reply to the database. Example JSON object for body:
+    ```JSON
+    {  
+      "replyId":0,
+      "parent":{  
+        "postId":4
+      },
+      "author":{  
+        "userID":2
+      },
+      "content":"heres a reply to the post about beyoncé"
+    }
+    ```
   - `/replies/parent/{postId}`
     - GET: returns all replies which are in response to a given post
   
@@ -49,6 +81,7 @@ When working on the project:
 - Album Controller:
   - `/albums`
     - GET: returns all albums
+    - POST: add a new album to the database
   - `/albums/title/{title}`
     - GET: returns the album with the given title
   - `/albums/id/{id}`
